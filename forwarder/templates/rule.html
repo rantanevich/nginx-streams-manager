@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="py-5">
+    <h2>New rule</h2>
+  </div>
+  <form action="" method="POST" novalidate>
+    {{ form.hidden_tag() }}
+    <div class="mb-3">
+      {{ form.src_port.label(class="col-sm-4 col-form-label") }}
+      {% if form.src_port.errors %}
+        {{ form.src_port(class="form-control is-invalid") }}
+        <div class="invalid-feedback">
+          {% for error in form.src_port.errors %}
+            <span>{{ error }}</span>
+          {% endfor %}
+        </div>
+      {% else %}
+        {{ form.src_port(class="form-control") }}
+      {% endif %}
+    </div>
+    <div class="mb-3">
+      {{ form.dst_ip.label(class="col-sm-4 col-form-label") }}
+      {% if form.dst_ip.errors %}
+        {{ form.dst_ip(class="form-control is-invalid") }}
+        <div class="invalid-feedback">
+          {% for error in form.dst_ip.errors %}
+            <span>{{ error }}</span>
+          {% endfor %}
+        </div>
+      {% else %}
+        {{ form.dst_ip(class="form-control") }}
+      {% endif %}
+    </div>
+    <div class="mb-3">
+      {{ form.dst_port.label(class="col-sm-4 col-form-label") }}
+      {% if form.dst_port.errors %}
+        {{ form.dst_port(class="form-control is-invalid") }}
+        <div class="invalid-feedback">
+          {% for error in form.dst_port.errors %}
+            <span>{{ error }}</span>
+          {% endfor %}
+        </div>
+      {% else %}
+        {{ form.dst_port(class="form-control") }}
+      {% endif %}
+    </div>
+    <div class="mb-3">
+      {{ form.comment.label(class="col-sm-4 col-form-label") }}
+      {% if form.comment.errors %}
+        {{ form.comment(class="form-control is-invalid") }}
+        <div class="invalid-feedback">
+          {% for error in form.comment.errors %}
+            <span>{{ error }}</span>
+          {% endfor %}
+        </div>
+      {% else %}
+        {{ form.comment(class="form-control") }}
+      {% endif %}
+    </div>
+    <hr class="my-4">
+    {{ form.submit(class="btn btn-primary btn-lg") }}
+    <a href="/" class="btn btn-danger btn-lg" role="button">Cancel</a>
+  </form>
+{% endblock %}
