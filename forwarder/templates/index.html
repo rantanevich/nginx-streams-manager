@@ -17,13 +17,20 @@
   <tbody>
     {% for rule in rules %}
     <tr>
-      <td><span class="badge bg-success">Enabled</span></td>
+      <td>
+        {% if rule.enabled %}
+        <span class="badge bg-success">Enabled</span>
+        {% else %}
+        <span class="badge bg-danger">Disabled</span>
+        {% endif %}
+      </td>
       <td>{{ rule.src_port }}</td>
       <td>{{ rule.dst_ip }}</td>
       <td>{{ rule.dst_port }}</td>
       <td>TCP</td>
       <td>{{ rule.comment }}</td>
       <td>
+        <a href="/rule/{{ rule.id }}/edit" class="btn btn-primary" role="button">Edit</a>
         <a href="/" class="btn btn-danger" role="button" data-bs-toggle="modal" data-bs-target="#confirm-delete">Delete</a>
         <div class="modal fade" id="confirm-delete" tabindex="-1">
           <div class="modal-dialog modal-dialog-centered">

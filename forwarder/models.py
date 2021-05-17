@@ -15,6 +15,7 @@ class Rule(db.Model):
     dst_ip = db.Column(db.String(16))
     dst_port = db.Column(db.Integer)
     comment = db.Column(db.String(128))
+    enabled = db.Column(db.Boolean)
 
     nginx_conf = Path(app.config['NGINX_CONF'])
     backup_conf = Path(app.config['NGINX_CONF'] + '.bak')
@@ -28,7 +29,8 @@ class Rule(db.Model):
 
     @classmethod
     def apply_rules(cls):
-        new_conf = render_template('nginx.conf', rules=cls.query.all())
+        rules = cls.query.filter(cls.enabled).all()
+        new_conf = render_template('nginx.conf', rules=rules)
         cls.backup_conf.write_bytes(cls.nginx_conf.read_bytes())
         cls.nginx_conf.write_text(new_conf)
 
@@ -46,6 +48,7 @@ class Rule(db.Model):
 
         if is_rollback_needed:
             cls.nginx_conf.write_bytes(cls.backup_conf.read_bytes())
+        return not is_rollback_needed
 
     @staticmethod
     def is_port_in_use(port):

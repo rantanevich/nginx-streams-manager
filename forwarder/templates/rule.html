@@ -6,17 +6,30 @@
   </div>
   <form action="" method="POST" novalidate>
     {{ form.hidden_tag() }}
+    {{ form.action }}
+    <div class="mb-3 form-check">
+      {{ form.enabled.label(class="form-check-label") }}
+      {{ form.enabled(class="form-check-input", checked=True) }}
+    </div>
     <div class="mb-3">
+      {% if form.action.data == 'edit' %}
+        {% set valid_form = form.src_port(class="form-control", readonly=True) %}
+        {% set invalid_form = form.src_port(class="form-control is-invalid", readonly=True) %}
+      {% else %}
+        {% set valid_form = form.src_port(class="form-control") %}
+        {% set invalid_form = form.src_port(class="form-control is-invalid") %}
+      {% endif %}
+
       {{ form.src_port.label(class="col-sm-4 col-form-label") }}
       {% if form.src_port.errors %}
-        {{ form.src_port(class="form-control is-invalid") }}
+        {{ invalid_form }}
         <div class="invalid-feedback">
           {% for error in form.src_port.errors %}
             <span>{{ error }}</span>
           {% endfor %}
         </div>
       {% else %}
-        {{ form.src_port(class="form-control") }}
+        {{ valid_form }}
       {% endif %}
     </div>
     <div class="mb-3">
