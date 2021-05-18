@@ -1,0 +1,19 @@
+[Unit]
+Description=Gunicorn daemon
+Requires=gunicorn.socket
+After=network.target
+
+[Service]
+Type=notify
+User=gunicorn
+Group=gunicorn
+RuntimeDirectory=gunicorn
+WorkingDirectory=/home/gunicorn/nginx-streams-manager
+ExecStart=/home/gunicorn/nginx-streams-manager/venv/bin/gunicorn --workers=2 --worker-tmp-dir=/dev/shm server:app
+ExecReload=/bin/kill -s HUP $MAINPID
+KillMode=mixed
+TimeoutStopSec=5
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
