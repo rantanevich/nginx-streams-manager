@@ -32,12 +32,12 @@
         <td class="comment">{{ rule.comment }}</td>
         <td class="action">
           <a href="/rule/{{ rule.id }}/edit" class="btn btn-primary" role="button">Edit</a>
-          <a href="/" class="btn btn-danger" role="button" data-bs-toggle="modal" data-bs-target="#confirm-delete">Delete</a>
-          <div class="modal fade" id="confirm-delete" tabindex="-1">
+          <a href="/" class="btn btn-danger" role="button" data-bs-toggle="modal" data-bs-target="#confirm-delete-{{ loop.index }}">Delete</a>
+          <div class="modal fade" id="confirm-delete-{{ loop.index }}" tabindex="-1">
             <div class="modal-dialog modal-dialog-centered">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title" id="confirm-delete">Confirmation</h5>
+                  <h5 class="modal-title" id="confirm-delete-{{ loop.index }}">Confirmation</h5>
                   <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
