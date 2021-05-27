@@ -47,9 +47,10 @@ systemctl enable gunicorn.service
 systemctl start gunicorn.service
 
 chmod o+x /home/gunicorn
-touch /etc/nginx/nginx.conf.bak
-chgrp gunicorn /etc/nginx/nginx.conf{,.bak}
-chmod 664 /etc/nginx/nginx.conf{,.bak}
+touch /etc/nginx/stream.conf{,.bak}
+chgrp gunicorn /etc/nginx/stream.conf{,.bak}
+chmod 664 /etc/nginx/stream.conf{,.bak}
+cp deploy/nginx.conf /etc/nginx
 cp deploy/gunicorn.conf /etc/nginx/conf.d/
 nginx -t && nginx -s reload
 ```

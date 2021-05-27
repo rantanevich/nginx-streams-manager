@@ -10,7 +10,7 @@ basedir = Path(__file__).parent
 
 class Config:
     SOURCE_IP = os.getenv('SOURCE_IP')
-    NGINX_CONF = '/etc/nginx/nginx.conf'
+    STREAM_CONF = '/etc/nginx/stream.conf'
 
     SECRET_KEY = os.getenv('SECRET_KEY')
 

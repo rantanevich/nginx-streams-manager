@@ -17,8 +17,8 @@ class Rule(db.Model):
     comment = db.Column(db.String(128))
     enabled = db.Column(db.Boolean)
 
-    nginx_conf = Path(app.config['NGINX_CONF'])
-    backup_conf = Path(app.config['NGINX_CONF'] + '.bak')
+    stream_conf = Path(app.config['STREAM_CONF'])
+    backup_conf = Path(app.config['STREAM_CONF'] + '.bak')
 
     def __repr__(self):
         return f'<Rule: id={self.id}>'
@@ -30,9 +30,9 @@ class Rule(db.Model):
     @classmethod
     def apply_rules(cls):
         rules = cls.query.filter(cls.enabled).all()
-        new_conf = render_template('nginx.conf', rules=rules)
-        cls.backup_conf.write_bytes(cls.nginx_conf.read_bytes())
-        cls.nginx_conf.write_text(new_conf)
+        new_conf = render_template('stream.conf', rules=rules)
+        cls.backup_conf.write_bytes(cls.stream_conf.read_bytes())
+        cls.stream_conf.write_text(new_conf)
 
         test_conf = subprocess.run('sudo nginx -t',
                                    shell=True,
@@ -47,7 +47,7 @@ class Rule(db.Model):
             is_rollback_needed = reload_conf.returncode != 0
 
         if is_rollback_needed:
-            cls.nginx_conf.write_bytes(cls.backup_conf.read_bytes())
+            cls.stream_conf.write_bytes(cls.backup_conf.read_bytes())
         return not is_rollback_needed
 
     @staticmethod
