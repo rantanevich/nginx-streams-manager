@@ -1,0 +1,12 @@
+bind = '{{ gunicorn_bind }}'
+wsgi_app = '{{ gunicorn_wsgi }}'
+
+pidfile = '/tmp/{{ gunicorn_app_name }}.pid'
+
+workers = {{ gunicorn_workers }}
+worker_tmp_dir = '{{ gunicorn_worker_tmp_dir }}'
+timeout = {{ gunicorn_timeout }}
+
+accesslog = '{{ gunicorn_access_log }}'
+errorlog = '{{ gunicorn_error_log }}'
+loglevel = '{{ gunicorn_log_level }}'

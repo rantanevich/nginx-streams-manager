@@ -1,0 +1,61 @@
+---
+- name: prepare a server to serve application
+  hosts: all
+  become: yes
+  gather_facts: no
+
+  vars_files:
+    - vars.yml
+
+  pre_tasks:
+    - name: ensure system dependencies are installed
+      yum: name={{ item }} state=present
+      loop:
+        - git
+        - python3
+        - python-setuptools
+
+    - name: disable SELinux in the /etc/selinux/config
+      lineinfile:
+        path: /etc/selinux/config
+        regexp: "^SELINUX="
+        line: SELINUX=disabled
+      register: selinux_config
+
+    - name: switch running SELinux to permissive mode
+      command: setenforce 0
+      when: selinux_config.changed
+
+
+
+  roles:
+    - nginx
+    - gunicorn
+
+  post_tasks:
+    - name: retrieve nginx binary path
+      command: which nginx
+      register: nginx_path
+
+    - name: allow gunicorn user to reload nginx
+      lineinfile:
+        path: "/etc/sudoers.d/{{ gunicorn_user }}"
+        line: "{{ gunicorn_user }} ALL=(root) NOPASSWD: {{ nginx_path.stdout }} -t, {{ nginx_path.stdout }} -s reload"
+        create: yes
+        validate: /usr/sbin/visudo -cf %s
+
+    - name: create stream.conf, stream.conf.bak files
+      file:
+        path: "{{ item }}"
+        owner: root
+        group: gunicorn
+        mode: 0664
+        state: touch
+      loop:
+        - /etc/nginx/stream.conf
+        - /etc/nginx/stream.conf.bak
+      notify: reload_nginx
+
+  handlers:
+    - name: reload_nginx
+      systemd: name=nginx state=reloaded

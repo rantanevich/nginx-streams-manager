@@ -1,0 +1,59 @@
+---
+- name: install gunicorn
+  pip:
+    name: gunicorn
+    version: "{{ gunicorn_version }}"
+    executable: pip3
+    state: present
+
+- name: create a symbolic link
+  file:
+    src: /usr/local/bin/gunicorn
+    dest: /usr/bin/gunicorn
+    owner: root
+    group: root
+    mode: 0755
+    state: link
+
+- name: ensure gunicorn user exists
+  user:
+    name: "{{ gunicorn_user }}"
+    create_home: yes
+    shell: /bin/bash
+    state: present
+
+- name: ensure /etc/gunicorn exists
+  file:
+    name: /etc/gunicorn
+    owner: root
+    group: root
+    mode: 0755
+    state: directory
+
+- name: copy gunicorn app config
+  template:
+    src: gunicorn.py.j2
+    dest: /etc/gunicorn/{{ gunicorn_app_name }}.py
+    owner: root
+    group: root
+    mode: 0644
+
+- name: install systemd service and socket
+  template:
+    src: "{{ item.src }}"
+    dest: "/etc/systemd/system/{{ item.dest }}"
+    owner: root
+    group: root
+    mode: 0644
+  loop:
+    - {src: "systemd.service.j2", dest: "{{ gunicorn_app_name }}.service"}
+    - {src: "systemd.socket.j2", dest: "{{ gunicorn_app_name }}.socket"}
+
+- name: enable systemd service and socket
+  systemd:
+    name: "{{ item }}"
+    enabled: yes
+    daemon_reload: yes
+  loop:
+    - "{{ gunicorn_app_name }}.service"
+    - "{{ gunicorn_app_name }}.socket"

@@ -1,0 +1,12 @@
+---
+app_database_url: sqlite:///{{ gunicorn_app_dir }}/app.db
+
+nginx_user: nginx
+
+gunicorn_user: gunicorn
+gunicorn_app_name: nginx-streams-manager
+gunicorn_app_dir: /opt/{{ gunicorn_app_name }}
+
+gunicorn_bind: unix:/run/{{ gunicorn_app_name }}.sock
+gunicorn_wsgi: server:app
+gunicorn_workers: 2

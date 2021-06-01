@@ -1,0 +1,19 @@
+[Unit]
+Description={{ gunicorn_app_name }}
+Requires={{ gunicorn_app_name }}.socket
+After=network.target
+
+[Service]
+Type=notify
+User={{ gunicorn_user }}
+Group={{ gunicorn_user }}
+RuntimeDirectory={{ gunicorn_app_name }}
+WorkingDirectory={{ gunicorn_app_dir }}
+ExecStart=/usr/bin/env gunicorn --config /etc/gunicorn/{{ gunicorn_app_name }}.py
+ExecReload=/bin/kill -s HUP $MAINPID
+KillMode=mixed
+TimeoutStopSec=5
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

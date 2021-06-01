@@ -2,22 +2,22 @@
 
 {% block content %}
   <div class="py-5">
-    <h2>New rule</h2>
+    <h2>{{ title }} rule</h2>
   </div>
   <form action="" method="POST" novalidate>
     {{ form.hidden_tag() }}
     {{ form.action }}
     <div class="mb-3 form-check">
       {{ form.enabled.label(class="form-check-label") }}
-      {{ form.enabled(class="form-check-input", checked=True) }}
+      {{ form.enabled(class="form-check-input") }}
     </div>
     <div class="mb-3">
       {% if form.action.data == 'edit' %}
-        {% set valid_form = form.src_port(class="form-control", readonly=True) %}
-        {% set invalid_form = form.src_port(class="form-control is-invalid", readonly=True) %}
+        {% set valid_form = form.src_port(class="form-control", placeholder="1-65535", readonly=True) %}
+        {% set invalid_form = form.src_port(class="form-control is-invalid", placeholder="1-65535", readonly=True) %}
       {% else %}
-        {% set valid_form = form.src_port(class="form-control") %}
-        {% set invalid_form = form.src_port(class="form-control is-invalid") %}
+        {% set valid_form = form.src_port(class="form-control", placeholder="1-65535") %}
+        {% set invalid_form = form.src_port(class="form-control is-invalid", placeholder="0-65535") %}
       {% endif %}
 
       {{ form.src_port.label(class="col-sm-4 col-form-label") }}
@@ -35,40 +35,40 @@
     <div class="mb-3">
       {{ form.dst_ip.label(class="col-sm-4 col-form-label") }}
       {% if form.dst_ip.errors %}
-        {{ form.dst_ip(class="form-control is-invalid") }}
+        {{ form.dst_ip(class="form-control is-invalid", placeholder="10.0.0.1") }}
         <div class="invalid-feedback">
           {% for error in form.dst_ip.errors %}
             <span>{{ error }}</span>
           {% endfor %}
         </div>
       {% else %}
-        {{ form.dst_ip(class="form-control") }}
+        {{ form.dst_ip(class="form-control", placeholder="10.0.0.1") }}
       {% endif %}
     </div>
     <div class="mb-3">
       {{ form.dst_port.label(class="col-sm-4 col-form-label") }}
       {% if form.dst_port.errors %}
-        {{ form.dst_port(class="form-control is-invalid") }}
+        {{ form.dst_port(class="form-control is-invalid", placeholder="1-65535") }}
         <div class="invalid-feedback">
           {% for error in form.dst_port.errors %}
             <span>{{ error }}</span>
           {% endfor %}
         </div>
       {% else %}
-        {{ form.dst_port(class="form-control") }}
+        {{ form.dst_port(class="form-control", placeholder="1-65535") }}
       {% endif %}
     </div>
     <div class="mb-3">
       {{ form.comment.label(class="col-sm-4 col-form-label") }}
       {% if form.comment.errors %}
-        {{ form.comment(class="form-control is-invalid") }}
+        {{ form.comment(class="form-control is-invalid", placeholder="Your comment") }}
         <div class="invalid-feedback">
           {% for error in form.comment.errors %}
             <span>{{ error }}</span>
           {% endfor %}
         </div>
       {% else %}
-        {{ form.comment(class="form-control") }}
+        {{ form.comment(class="form-control", placeholder="Your comment") }}
       {% endif %}
     </div>
     <hr class="my-4">

@@ -4,15 +4,29 @@ It's Web UI to manage Nginx streams with a simple interface.
 
 
 
-# Requirements
+## Requirements
 
-* Linux (systemd)
+* RHEL / CentOS 7
 * Python 3.6+
 * Nginx (ngx_stream_core_module is enabled)
 
 
 
-# Installation
+## Installation
+
+### Ansible
+
+Prepare a server and install the latest version:
+```sh
+ansible-playbook -i srv-app-01, deploy/main.yml
+```
+
+Updating:
+```sh
+ansible-playbook -i srv-app-01, deploy/deploy.yml
+```
+
+### Manual
 
 Clone repository:
 ```sh
@@ -62,3 +76,16 @@ Environment variables:
 | SOURCE_IP    | yes      | 192.168.0.1      | IP address of external interface.       |
 | SECRET_KEY   | yes      | a9db20d4650      | It uses for any security related needs. |
 | DATABASE_URL | yes      | sqlite:///app.db | Database connection parameters.         |
+
+
+
+## Usage
+
+All rules with their settings:
+![plot](./docs/index.jpg)
+
+Adding a new rule:
+![plot](./docs/adding.jpg)
+
+Editing the rule (source port is read only):
+![plot](./docs/editing.jpg)

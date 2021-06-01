@@ -1,5 +1,5 @@
-upstream app_server {
-    server  unix:/run/gunicorn.sock fail_timeout=0;
+upstream {{ gunicorn_app_name }} {
+    server  {{ gunicorn_bind }} fail_timeout=0;
 }
 
 server {
@@ -8,7 +8,7 @@ server {
     location /static {
         expires     30d;
         access_log  off;
-        root        /home/gunicorn/nginx-streams-manager/forwarder;
+        root        {{ gunicorn_app_dir }}/forwarder;
     }
 
     location / {
@@ -28,6 +28,6 @@ server {
         proxy_read_timeout     60s;
 
         proxy_redirect         off;
-        proxy_pass             http://app_server;
+        proxy_pass             http://{{ gunicorn_app_name }};
     }
 }

@@ -142,3 +142,6 @@ cython_debug/
 
 # sqlite3 databases
 *.db
+
+# Vagrant cache
+.vagrant/

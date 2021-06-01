@@ -1,0 +1,10 @@
+[Unit]
+Description={{ gunicorn_app_name }} socket
+
+[Socket]
+ListenStream=/run/{{ gunicorn_app_name }}.sock
+SocketUser={{ nginx_user }}
+SocketMode=600
+
+[Install]
+WantedBy=sockets.target

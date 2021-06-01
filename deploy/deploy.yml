@@ -1,0 +1,60 @@
+---
+- name: deploy the latest version of application
+  hosts: all
+  become: yes
+  gather_facts: yes
+
+  vars_files:
+    - vars.yml
+
+  tasks:
+    - name: checkout the latest version
+      git:
+        repo: https://github.com/rantanevich/nginx-streams-manager.git
+        dest: "{{ gunicorn_app_dir }}"
+        update: yes
+      notify: restart_gunicorn
+
+    - name: ensure python dependencies are installed
+      pip:
+        requirements: "{{ gunicorn_app_dir }}/requirements.txt"
+        executable: pip3
+        state: present
+
+    - name: install database migrations
+      command:
+        cmd: /usr/local/bin/flask db upgrade
+        chdir: "{{ gunicorn_app_dir }}"
+      environment:
+        FLASK_APP: server.py
+        DATABASE_URL: "{{ app_database_url }}"
+
+    - name: ensure ownership is correct
+      file:
+        path: "{{ gunicorn_app_dir }}"
+        owner: "{{ gunicorn_user }}"
+        group: "{{ gunicorn_user }}"
+        recurse: yes
+        state: directory
+      notify: restart_gunicorn
+
+    - name: check if .env file exists
+      stat: path={{ gunicorn_app_dir }}/.env
+      register: env_file
+
+    - name: create .env file with project settings (if doesn't exist)
+      copy:
+        content: |
+          SOURCE_IP={{ ansible_default_ipv4.address }}
+          SECRET_KEY={{ lookup('password', '/dev/null chars=ascii_lowercase,digits length=32') }}
+          DATABASE_URL={{ app_database_url }}
+        dest: "{{ gunicorn_app_dir }}/.env"
+        owner: "{{ gunicorn_user }}"
+        group: "{{ gunicorn_user }}"
+        mode: 0644
+      when: not env_file.stat.exists
+      notify: restart_gunicorn
+
+  handlers:
+    - name: restart_gunicorn
+      systemd: name={{ gunicorn_app_name }} state=restarted

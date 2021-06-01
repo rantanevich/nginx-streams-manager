@@ -14,7 +14,7 @@ class RuleForm(FlaskForm):
                                                  NumberRange(min=1, max=65535)])
     comment = StringField('Comment')
     action = HiddenField('Action')
-    enabled = BooleanField('Enable rule')
+    enabled = BooleanField('Enable rule', default=True)
     submit = SubmitField('Apply')
 
     def validate_src_port(form, field):

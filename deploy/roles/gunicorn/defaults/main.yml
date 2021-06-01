@@ -1,0 +1,15 @@
+---
+gunicorn_version: 20.1.0
+gunicorn_user: gunicorn
+gunicorn_app_name: gunicorn
+gunicorn_app_dir: /opt/{{ gunicorn_app_name }}
+
+gunicorn_bind: 127.0.0.1:8000
+gunicorn_wsgi: main:app
+gunicorn_workers: 2
+gunicorn_timeout: 30
+gunicorn_worker_tmp_dir: /dev/shm
+
+gunicorn_log_level: info
+gunicorn_access_log: "-"
+gunicorn_error_log: "-"
