@@ -81,11 +81,8 @@ Environment variables:
 
 ## Usage
 
-All rules with their settings:
 ![plot](./docs/index.jpg)
 
-Adding a new rule:
 ![plot](./docs/adding.jpg)
 
-Editing the rule (source port is read only):
 ![plot](./docs/editing.jpg)
