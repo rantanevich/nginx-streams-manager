@@ -3,6 +3,9 @@
   hosts: all
   become: yes
   gather_facts: yes
+  environment:
+    http_proxy: "{{ http_proxy | default }}"
+    https_proxy: "{{ https_proxy | default }}"
 
   vars_files:
     - vars.yml

@@ -27,6 +27,13 @@ class Rule(db.Model):
         src_ip = app.config['SOURCE_IP']
         return (f'{src_ip}:{self.src_port} -> {self.dst_ip}:{self.dst_port}')
 
+    def update(self, **kwargs):
+        self.src_port = kwargs.get('src_port')
+        self.dst_ip = kwargs.get('dst_ip')
+        self.dst_port = kwargs.get('dst_port')
+        self.comment = kwargs.get('comment')
+        self.enabled = kwargs.get('enabled')
+
     @classmethod
     def apply_rules(cls):
         rules = cls.query.filter(cls.enabled).all()

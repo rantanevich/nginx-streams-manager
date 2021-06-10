@@ -3,6 +3,9 @@
   hosts: all
   become: yes
   gather_facts: no
+  environment:
+    http_proxy: "{{ http_proxy | default }}"
+    https_proxy: "{{ https_proxy | default }}"
 
   vars_files:
     - vars.yml
@@ -25,8 +28,6 @@
     - name: switch running SELinux to permissive mode
       command: setenforce 0
       when: selinux_config.changed
-
-
 
   roles:
     - nginx

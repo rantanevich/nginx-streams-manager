@@ -12,7 +12,6 @@
     dest: /usr/bin/gunicorn
     owner: root
     group: root
-    mode: 0755
     state: link
 
 - name: ensure gunicorn user exists
