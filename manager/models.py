@@ -75,7 +75,8 @@ class RouteTable:
         with IPRoute() as ipr:
             routes = set()
             for route in ipr.get_routes(table=254, family=socket.AF_INET):
-                if route['proto'] in [RTProto.BOOT, RTProto.STATIC]:
+                if (route['proto'] in [RTProto.BOOT, RTProto.STATIC] and
+                        route['dst_len'] != 0):
                     routes.add(RouteTable.parse_route(route))
             return routes
 
