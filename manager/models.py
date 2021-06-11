@@ -4,7 +4,7 @@ from pathlib import Path
 
 from flask import render_template
 
-from forwarder import app, db
+from manager import app, db
 
 
 class Rule(db.Model):

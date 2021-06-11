@@ -8,7 +8,7 @@ server {
     location /static {
         expires     30d;
         access_log  off;
-        root        {{ gunicorn_app_dir }}/forwarder;
+        root        {{ gunicorn_app_dir }}/manager;
     }
 
     location / {

@@ -2,9 +2,9 @@ from socket import gethostname
 
 from flask import render_template, redirect, flash, url_for
 
-from forwarder import app, db
-from forwarder.models import Rule
-from forwarder.forms import RuleForm
+from manager import app, db
+from manager.models import Rule
+from manager.forms import RuleForm
 
 
 @app.route('/')

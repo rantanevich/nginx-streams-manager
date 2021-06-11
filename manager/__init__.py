@@ -12,4 +12,4 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
 
-from forwarder import routes, models
+from manager import routes, models

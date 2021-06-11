@@ -2,7 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, IntegerField, BooleanField, HiddenField, SubmitField
 from wtforms.validators import DataRequired, NumberRange, IPAddress, ValidationError
 
-from forwarder.models import Rule
+from manager.models import Rule
 
 
 class RuleForm(FlaskForm):
