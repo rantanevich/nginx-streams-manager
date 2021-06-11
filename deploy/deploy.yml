@@ -15,6 +15,7 @@
       git:
         repo: https://github.com/rantanevich/nginx-streams-manager.git
         dest: "{{ gunicorn_app_dir }}"
+        version: "{{ app_git_version }}"
         update: yes
       notify: restart_gunicorn
 

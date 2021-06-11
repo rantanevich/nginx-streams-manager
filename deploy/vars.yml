@@ -1,4 +1,5 @@
 ---
+app_git_version: main
 app_database_url: sqlite:///{{ gunicorn_app_dir }}/app.db
 
 nginx_user: nginx
