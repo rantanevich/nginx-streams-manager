@@ -6,6 +6,7 @@
   environment:
     http_proxy: "{{ http_proxy | default }}"
     https_proxy: "{{ https_proxy | default }}"
+  tags: dev
 
   vars_files:
     - vars.yml
@@ -44,6 +45,7 @@
         line: "{{ gunicorn_user }} ALL=(root) NOPASSWD: {{ nginx_path.stdout }} -t, {{ nginx_path.stdout }} -s reload"
         create: yes
         validate: /usr/sbin/visudo -cf %s
+      when: gunicorn_user != "root"
 
     - name: create stream.conf, stream.conf.bak files
       file:

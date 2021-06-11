@@ -1,6 +1,6 @@
 # nginx-streams-manager
 
-It's Web UI to manage Nginx streams with a simple interface.
+It's Web UI to manage Nginx streams.
 
 
 
@@ -91,6 +91,18 @@ Environment variables:
 | SECRET_KEY   | yes      | a9db20d4650      | It uses for any security related needs. |
 | DATABASE_URL | yes      | sqlite:///app.db | Database connection parameters.         |
 
+
+## Development
+
+Requirements:
+* QEMU-KVM
+* vagrant-libvirt plugin
+* NFS server daemon
+* ansible 2.19+
+
+```sh
+vagrant up --provider=libvirt
+```
 
 
 ## Usage

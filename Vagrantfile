@@ -3,7 +3,7 @@ Vagrant.configure("2") do |config|
   config.vm.synced_folder '.', '/vagrant',
     type: "nfs",
     nfs_version: 4,
-    disabled: true
+    disabled: false
 
   config.vm.define "node-1" do |machine|
     machine.vm.box = "centos/7"
@@ -23,6 +23,11 @@ Vagrant.configure("2") do |config|
       ansible.limit = "all"
       ansible.playbook = "deploy/main.yml"
       ansible.config_file = "deploy/ansible.cfg"
+      ansible.tags = "dev"
+      ansible.extra_vars = {
+        gunicorn_user: "vagrant",
+        gunicorn_app_dir: "/vagrant"
+      }
     end
   end
 end
