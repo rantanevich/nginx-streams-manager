@@ -1,6 +1,6 @@
 # nginx-streams-manager
 
-It's Web UI to manage Nginx streams with a simple interface.
+It's Web UI to manage Nginx streams, static routes and network interfaces' addresses.
 
 
 
@@ -95,8 +95,22 @@ Environment variables:
 
 ## Usage
 
-![plot](./docs/index.jpg)
 
-![plot](./docs/adding.jpg)
+### Port Forwarding
 
-![plot](./docs/editing.jpg)
+![plot](./docs/stream.jpg)
+
+![plot](./docs/stream-adding.jpg)
+
+![plot](./docs/stream-editing.jpg)
+
+
+### Static Routes
+
+![plot](./docs/routes.jpg)
+
+
+
+### Addresses
+
+![plot](./docs/addresses.jpg)
