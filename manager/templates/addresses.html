@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <h4 class="mb-4">New address</h4>
+      <form class="mb-4" action="{{ url_for('addresses') }}" method="POST" novalidate>
+        {{ form.hidden_tag() }}
+        <div class="mb-3">
+          {{ form.address.label(class="col-sm-2 col-form-label") }}
+          <div class="col-sm-10">
+            {% if form.address.errors %}
+            {{ form.address(class="form-control is-invalid", placeholder="10.0.0.1/24") }}
+            <div class="invalid-feedback">
+              {% for error in form.address.errors %}
+                <span>{{ error }}</span>
+              {% endfor %}
+            </div>
+            {% else %}
+            {{ form.address(class="form-control", placeholder="10.0.0.1/24") }}
+            {% endif %}
+          </div>
+        </div>
+        <div class="mb-3">
+          {{ form.ifname.label(class="col-sm-2 col-form-label") }}
+          <div class="col-sm-10">
+            {{ form.ifname(class="form-select") }}
+          </div>
+        </div>
+        {{ form.submit(class="btn btn-primary") }}
+      </form>
+    </div>
+    <div class="col" id="addresses">
+      <h4 class="mb-4">Addresses</h4>
+      <table class="table table-striped table-hover table-borderless">
+        <thead>
+          <tr>
+            <th scope="col">Interface</th>
+            <th scope="col">Address</th>
+            <th scope="col">Prefix</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody class="list">
+          {% for address in addresses %}
+          <tr>
+            <td class="ifname">{{ address.ifname }}</td>
+            <td class="ip">{{ address.ip }}</td>
+            <td class="prefix">{{ address.prefix }}</td>
+            <td>
+              <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirm-delete-{{ loop.index }}">Delete</button>
+              <div class="modal fade" id="confirm-delete-{{ loop.index }}" tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="confirm-delete-{{ loop.index }}">Confirmation</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                      <p>Do you want to delete <strong>{{ address }}</strong>?</p>
+                    </div>
+                    <div class="modal-footer">
+                      <a href="/addresses/delete?ip={{ address.ip }}&prefix={{ address.prefix }}&ifindex={{ address.ifindex }}&ifname={{ address.ifname }}" class="btn btn-primary" role="button">Apply</a>
+                      <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -20,6 +20,17 @@
         <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"/></svg>
         <span class="fs-4">{{ hostname }}</span>
       </a>
+      <ul class="nav nav-pills">
+        <li class="nav-item">
+          <a href="{{ url_for('streams') }}" class="nav-link">Port Forwarding</a>
+        </li>
+        <li class="nav-item">
+          <a href="{{ url_for('routes') }}" class="nav-link">Routes</a>
+        </li>
+        <li class="nav-item">
+          <a href="{{ url_for('addresses') }}" class="nav-link">Addresses</a>
+        </li>
+      </ul>
     </header>
     <main>
       {% with messages = get_flashed_messages(with_categories=true) %}

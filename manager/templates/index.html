@@ -1,59 +1,85 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 
 {% block content %}
-<div id="rules">
-  <a href="/rule" class="btn btn-success" role="button">Add rule</a>
-  <table class="table table-striped table-hover table-borderless">
-    <thead>
-      <tr>
-        <th scope="col">Status</th>
-        <th scope="col">Source Port</th>
-        <th scope="col">Destination IP</th>
-        <th scope="col">Destination Port</th>
-        <th scope="col">Protocol</th>
-        <th scope="col">Comment</th>
-        <th scope="col">Action</th>
-      </tr>
-    </thead>
-    <tbody class="list">
-      {% for rule in rules %}
-      <tr>
-        <td class="enabled">
-          {% if rule.enabled %}
-          <span class="badge bg-success">Enabled</span>
-          {% else %}
-          <span class="badge bg-danger">Disabled</span>
-          {% endif %}
-        </td>
-        <td class="src_port">{{ rule.src_port }}</td>
-        <td class="dst_ip">{{ rule.dst_ip }}</td>
-        <td class="dst_port">{{ rule.dst_port }}</td>
-        <td class="proto">TCP</td>
-        <td class="comment">{{ rule.comment }}</td>
-        <td class="action">
-          <a href="/rule/{{ rule.id }}/edit" class="btn btn-primary" role="button">Edit</a>
-          <a href="/" class="btn btn-danger" role="button" data-bs-toggle="modal" data-bs-target="#confirm-delete-{{ loop.index }}">Delete</a>
-          <div class="modal fade" id="confirm-delete-{{ loop.index }}" tabindex="-1">
-            <div class="modal-dialog modal-dialog-centered">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="confirm-delete-{{ loop.index }}">Confirmation</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                  <p>Do you want to delete <strong>{{ rule }}</strong> rule?</p>
-                </div>
-                <div class="modal-footer">
-                  <a href="/rule/{{ rule.id }}/delete" class="btn btn-primary" role="button">Apply</a>
-                  <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+<div class="container">
+  <div class="row">
+    <div class="col" id="static-routes">
+      <h4 class="mb-4">Static routes</h4>
+      <table class="table table-striped table-hover table-borderless">
+        <thead>
+          <tr>
+            <th scope="col">Destination</th>
+            <th scope="col">Gateway</th>
+            <th scope="col">Interface</th>
+          </tr>
+        </thead>
+        <tbody class="list">
+          {% for route in routes %}
+          <tr>
+            <td class="dst">{{ route.dst }}/{{ route.prefix }}</td>
+            <td class="gateway">{{ route.gateway }}</td>
+            <td class="ifname">{{ route.ifname }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <div class="col" id="addresses">
+      <h4 class="mb-4">Addresses</h4>
+      <table class="table table-striped table-hover table-borderless">
+        <thead>
+          <tr>
+            <th scope="col">Interface</th>
+            <th scope="col">Address</th>
+            <th scope="col">Prefix</th>
+          </tr>
+        </thead>
+        <tbody class="list">
+          {% for address in addresses %}
+          <tr>
+            <td class="ifname">{{ address.ifname }}</td>
+            <td class="ip">{{ address.ip }}</td>
+            <td class="prefix">{{ address.prefix }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col" id="streams">
+      <h4 class="mb-4">Port Forwarding</h4>
+      <table class="table table-striped table-hover table-borderless">
+        <thead>
+          <tr>
+            <th scope="col">Status</th>
+            <th scope="col">Source Port</th>
+            <th scope="col">Destination IP</th>
+            <th scope="col">Destination Port</th>
+            <th scope="col">Protocol</th>
+            <th scope="col">Comment</th>
+          </tr>
+        </thead>
+        <tbody class="list">
+          {% for stream in streams %}
+          <tr>
+            <td class="enabled">
+              {% if stream.enabled %}
+              <span class="badge bg-success">Enabled</span>
+              {% else %}
+              <span class="badge bg-danger">Disabled</span>
+              {% endif %}
+            </td>
+            <td class="src_port">{{ stream.src_port }}</td>
+            <td class="dst_ip">{{ stream.dst_ip }}</td>
+            <td class="dst_port">{{ stream.dst_port }}</td>
+            <td class="proto">TCP</td>
+            <td class="comment">{{ stream.comment }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>
 {% endblock %}

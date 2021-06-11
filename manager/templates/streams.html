@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div id="streams">
+  <a href="/stream" class="btn btn-success" role="button">Add rule</a>
+  <table class="table table-striped table-hover table-borderless">
+    <thead>
+      <tr>
+        <th scope="col">Status</th>
+        <th scope="col">Source Port</th>
+        <th scope="col">Destination IP</th>
+        <th scope="col">Destination Port</th>
+        <th scope="col">Protocol</th>
+        <th scope="col">Comment</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody class="list">
+      {% for stream in streams %}
+      <tr>
+        <td class="enabled">
+          {% if stream.enabled %}
+          <span class="badge bg-success">Enabled</span>
+          {% else %}
+          <span class="badge bg-danger">Disabled</span>
+          {% endif %}
+        </td>
+        <td class="src_port">{{ stream.src_port }}</td>
+        <td class="dst_ip">{{ stream.dst_ip }}</td>
+        <td class="dst_port">{{ stream.dst_port }}</td>
+        <td class="proto">TCP</td>
+        <td class="comment">{{ stream.comment }}</td>
+        <td class="action">
+          <a href="/stream/{{ stream.id }}/edit" class="btn btn-primary" role="button">Edit</a>
+          <a href="/" class="btn btn-danger" role="button" data-bs-toggle="modal" data-bs-target="#confirm-delete-{{ loop.index }}">Delete</a>
+          <div class="modal fade" id="confirm-delete-{{ loop.index }}" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="confirm-delete-{{ loop.index }}">Confirmation</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                  <p>Do you want to delete <strong>{{ stream }}</strong></p>
+                </div>
+                <div class="modal-footer">
+                  <a href="/stream/{{ stream.id }}/delete" class="btn btn-primary" role="button">Apply</a>
+                  <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

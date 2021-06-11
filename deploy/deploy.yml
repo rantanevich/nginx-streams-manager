@@ -23,6 +23,8 @@
         requirements: "{{ gunicorn_app_dir }}/requirements.txt"
         executable: pip3
         state: present
+      notify: restart_gunicorn
+      tags: dev
 
     - name: install database migrations
       command:
@@ -31,6 +33,7 @@
       environment:
         FLASK_APP: server.py
         DATABASE_URL: "{{ app_database_url }}"
+      tags: dev
 
     - name: ensure ownership is correct
       file:

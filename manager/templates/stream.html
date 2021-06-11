@@ -73,6 +73,6 @@
     </div>
     <hr class="my-4">
     {{ form.submit(class="btn btn-primary btn-lg") }}
-    <a href="/" class="btn btn-danger btn-lg" role="button">Cancel</a>
+    <a href="{{ url_for('streams') }}" class="btn btn-danger btn-lg" role="button">Cancel</a>
   </form>
 {% endblock %}
